@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title> Admin Dashboard </title>
+		<link rel="stylesheet" href="admin.css">
+		<script src="../jquery.js"></script>
+		<script src="../jquery.chromatable.js"></script>
+		<script src="../keyValidator.js"></script>
+		<script type="text/javascript">
+		function init(){
+			sendData("autosort.php","",function(data){// autosort
+				$("#autosort-inner").html(data);
+			});
+			$("#autosort-inner").html("Loading...Please wait");
+			sendData("careerTable.php","",function(data){// manageCareers
+				$("#manageCareers-inner").html(data);
+				$("#table-Careers").chromatable({
+					width: "550px",
+					height: "400px",
+					scrolling: "yes"
+				});
+			});
+			$("#manageCareers-inner").html("Loading...Please wait");
+			sendData("resetStudent.php","",function(data){// resetStudent
+				$("#resetStudent-inner").html(data);
+			});
+			$("#resetStudent-inner").html("Loading...Please wait");
+			sendData("studentTable.php","",function(data){// generate the list of students
+				$("#genScheduleHandouts-inner").html(data);
+				$("#table-Students").chromatable({
+					width: "590px",
+					height: "400px",
+					scrolling: "yes"
+				});
+			});
+			$("#genScheduleHandouts-inner").html("Loading...Please wait");
+		};
+		function sendData(file,send,done){
+			$.ajax({
+				type:"POST",
+				url:file,
+				data:send,
+				success:done								
+			});
+		}
+
+		function runAutosort(){
+			if ( !confirm("Are you sure?\nRunning an automatic sort will overwrite any existing placement data.") )
+				return;
+				
+			var ID ={ run:"run"};
+			sendData("autosort.php",ID,function(data){
+				$("#autosort-inner").html(data);
+				sendData("studentTable.php","",function(data){// generate the list of students
+					$("#genScheduleHandouts-inner").html(data);
+					$("#table-Students").chromatable({
+						width: "590px",
+						height: "400px",
+						scrolling: "yes"
+					});
+				});
+				$("#genScheduleHandouts-inner").html("Loading...Please wait");
+			});
+			$("#autosort-inner").html("Loading...Please wait");
+		}
+		
+		function deleteCareer(career){
+			if ( !confirm("Are you sure?\n\nRemoving a career that students have already signed up for will cause their choice to be skipped.") )
+				return;
+			var ID = {action:'del', id:career};
+			sendData("careerTable.php",ID, function(data){
+				$("#manageCareers-inner").html(data);
+				$("#table-Careers").chromatable({
+					width: "550px",
+					height: "400px",
+					scrolling: "yes"
+
+				});
+			});
+			$("#manageCareers-inner").html("Redrawing table");
+		}
+		
+		function addCareer(career){
+			var _name =  document.getElementById("name").value;
+			var _location = document.getElementById("location").value;
+			var _maxStudents = document.getElementById("maxStudents").value;
+			var ID = {action:'add',name:_name,location:_location,maxStudents:_maxStudents};
+			sendData("careerTable.php",ID, function(data){
+				$("#manageCareers-inner").html(data);
+				$("#table-Careers").chromatable({
+					width: "590px",
+					height: "400px",
+					scrolling: "yes"
+				});
+			});
+			$("#manageCareers-inner").html("Redrawing table");
+		}
+		
+		function deleteStudent(){
+			var _submit = document.getElementById("deleteButton").value;
+			if ( !confirm("Are you sure?\nALL data will be removed for student "+_submit) )
+				return;
+				
+			var ID = {id:_submit};
+			sendData("resetStudent.php", ID, function(data){
+				$("#resetStudent-inner").html(data);
+				sendData("studentTable.php","",function(data){// generate the list of students
+					$("#genScheduleHandouts-inner").html(data);
+					$("#table-Students").chromatable({
+						width: "590px",
+						height: "400px",
+						scrolling: "yes"
+					});
+				});
+				$("#genScheduleHandouts-inner").html("Loading...Please wait");
+			});
+			$("#resetStudent-inner").html("Loading...Please wait");
+		}
+		
+		function manageCareerList(){
+			sendData("careerTable.php","",function(data){// manageCareers
+				$("#manageCareers-inner").html(data);
+				$("#table-Careers").chromatable({
+					width: "550px",
+					height: "400px",
+					scrolling: "yes"
+				});
+			});
+			$("#manageCareers-inner").html("Loading...Please wait");
+		}
+		
+		function genStudentlist(){
+			sendData('studentTable.php','',function(data){
+				$("#genScheduleHandouts-inner").html(data);
+				$("#table-Students").chromatable({
+					width: "590px",
+					height: "400px",
+					scrolling: "yes"
+				});
+			});
+			$("#genScheduleHandouts-inner").html("Loading...Please wait");
+		}
+		
+		function manualSortSpecificStudent()
+		{
+			var studentid = prompt("Student ID:");
+			if ( studentid == null )
+				return;
+			window.location="resolveBlanks.php?specific="+studentid;
+		}
+		</script>
+	</head>
+	<body onload="init()">
+		<div id="container">
+			<div id="header">
+				<h1>Career Day Dashboard</h1>
+			</div>
+			<section id="autosort">
+				<h2>Sorting</h2>
+				<h5>Automatic</h5>
+				<div id="autosort-inner"></div>
+				<h5>Manual</h5>
+				Running a manual sort will not overwrite any completed placement data.<br>
+				<form action="resolveBlanks.php" method="get"><input type="submit" value="Run Manual Sort"></form>
+				<button onClick="manualSortSpecificStudent()">Specific Manual Sort</button>
+			</section>
+			<section id="manageCareers">
+				<h2>Manage Careers</h2>
+				<button type="button" onclick="manageCareerList()">Refresh Career Table</button>
+				<div id="manageCareers-inner"></div>
+				<br><br>
+			</section>
+
+			<section id="manageStudents">
+				<h2>Manage Students</h2>
+				<button type="button" onclick="genStudentlist()">Refresh Student Table</button>
+				<h3>Reset student</h3>
+				<div id="resetStudent-inner"></div>
+				<div id="genScheduleHandouts-inner"></div>
+			</section>	
+		</div>
+	</body>
+</html>

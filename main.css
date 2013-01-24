@@ -1,0 +1,91 @@
+body{
+	margin:0;
+	font-family:Verdana;
+	background:url('gradient.png') repeat-x;
+	background-color:#CCCCCC;
+}
+
+#container{
+	width:1000px;
+	margin:auto;
+}
+
+#header{
+	margin: 10px 0 10px 0;
+	width:1000px;
+	height:100px;
+	background-color:#C8C8C8;
+	font-size:40px;
+	text-align:center;
+	border-radius:10px;  
+}
+
+#header h1{
+	margin:0;
+}
+
+#process{
+	width:890px;
+	margin-left:50px;
+	padding:5px;
+	border-bottom:2px solid #C8C8C8;
+}
+
+#ExBar{
+	width:890px;
+	height:30px;
+	margin-top:5px;
+	margin-bottom:5px;
+	background-color:#C8C8C8;
+	border-radius:50px;
+	position:relative;
+}
+
+#InBar{
+	position:absolute;
+	top:5px;
+	left:5px;
+	width:20px;
+	height:20px;
+	background-color:#28CC28;
+	border-radius:50px; 
+}
+
+#submitarea{
+	width:250px;
+	margin:auto;
+	margin-top:10px;
+	display:none;
+	
+}
+
+#conformation{
+	width:220px;
+	height:290px;
+	margin-left:50px;
+	padding:5px;
+	float:left;
+	border-right:2px solid #C8C8C8;
+	overflow-x: hidden;
+}
+
+#formarea{
+	width:660px;
+	height:290px;
+	padding:10px;
+	float:left;
+}
+
+#footer {
+	position: absolute;
+	width:100%;
+	margin:auto;
+	text-align:center;
+	top:530px;
+	color:grey;
+	font-size:10px;
+}
+
+.sect{
+	display:none;
+}

@@ -1,0 +1,12 @@
+<?php
+// Rename me to config.php!
+
+$databaseInfo = array(
+	"hostname" => "127.0.0.1",
+	"username" => "root",
+	"password" => "",
+	"database" => "careerday");
+
+$assemblyID = 999;
+$seniorOptOutID = 998;
+?>

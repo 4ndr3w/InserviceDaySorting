@@ -1,0 +1,78 @@
+body{
+	margin:0;
+	font-family:Verdana;
+	background:url('../gradient.png') repeat-x;
+	background-color:#CCCCCC;
+}
+
+table{
+	border-collapse:collapse;
+	border:1px solid black;
+	margin:auto;
+}
+
+
+tr,td,th{
+	border:1px solid black;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+tr,th{
+	background-color:#FFFFFF;	
+
+}
+
+h5
+{
+	margin:0;
+}
+
+#container{
+	width:1200px;
+	margin:auto;
+}
+
+#header{
+	width:500px;
+	margin:auto;
+	text-align:center;
+}
+
+#manageCareers{
+	border-right:2px solid #C8C8C8;
+}
+
+#autosort{
+	width:800px;
+	margin:auto;
+	text-align:center;
+	padding:10px;
+	border-bottom:2px solid #C8C8C8;
+}
+
+#manageCareers,#manageStudents{
+	width:580px;
+	padding-left:15px;
+	float:left;
+	text-align:center;
+}
+
+#table-Students
+{
+	table-layout: fixed;
+	width:580px;
+}
+
+.centered
+{
+	margin: auto;
+	text-align: center;
+}
+
+.columnHeader
+{
+	font-weight:bold;
+	text-align:center;
+}
+
