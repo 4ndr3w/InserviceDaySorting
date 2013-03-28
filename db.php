@@ -129,12 +129,12 @@ class Database
 	function getNumberOfStudentsSignedUpForCareer($id)
 	{
 		$num = 0;
-		for ( $i = 1; $i <= 4; $i++ )
+		for ( $i = 1; $i <= 5; $i++ )
 			$num += mysql_num_rows(mysql_query("SELECT * FROM `selections` WHERE `s".$i."` = ".$id));
 		return $num;
 	}
 	
-	function setStudentChoices($id, $c1, $c2, $c3, $c4)
+	function setStudentChoices($id, $c1, $c2, $c3, $c4, $c5)
 	{
 		if ( ($id = intval($id)) == 0 )
 			return false;
@@ -147,8 +147,10 @@ class Database
 			return false;
 		if ( ($c4 = intval($c4)) == 0 )
 			return false;
+		if ( ($c5 = intval($c5)) == 0 )
+			return false;
 			
-		$data = array($c1, $c2, $c3, $c4);
+		$data = array($c1, $c2, $c3, $c4, $c5);
 		foreach ( $data as $ak => $a )
 		{
 			foreach ( $data as $bk => $b )
@@ -158,7 +160,7 @@ class Database
 			}
 		}
 			
-		return mysql_query("INSERT INTO `selections` (id, s1,s2,s3,s4) VALUES (".$id.", ".$c1.", ".$c2.", ".$c3.", ".$c4.")");	
+		return mysql_query("INSERT INTO `selections` (id, s1,s2,s3,s4,s5) VALUES (".$id.", ".$c1.", ".$c2.", ".$c3.", ".$c4.", ".$c5.")");	
 	}
 	
 	function getStudentChoices($id)
@@ -171,7 +173,7 @@ class Database
 		return $this->genaricRemove("selections", $id);
 	}
 	
-	function setStudentPlacement($id, $p1, $p2, $p3)
+	function setStudentPlacement($id, $p1, $p2, $p3, $p4)
 	{
 		if ( ($id = intval($id)) == 0 )
 			return false;
@@ -182,11 +184,13 @@ class Database
 			return false;
 		if ( ($p3 = intval($p3)) == 0 )
 			return false;
+		if ( ($p4 = intval($p4)) == 0 )
+			return false;
 			
-		return mysql_query("INSERT INTO `placements` (id, p1,p2,p3) VALUES (".$id.", ".$p1.", ".$p2.", ".$p3.")");	
+		return mysql_query("INSERT INTO `placements` (id, p1,p2,p3,p4) VALUES (".$id.", ".$p1.", ".$p2.", ".$p3.", ".$p4.")");	
 	}
 	
-	function updateStudentPlacement($id, $p1, $p2, $p3)
+	function updateStudentPlacement($id, $p1, $p2, $p3, $p4)
 	{
 		if ( ($id = intval($id)) == 0 )
 			return false;
@@ -196,6 +200,8 @@ class Database
 		if ( ($p2 = intval($p2)) == 0 )
 			return false;
 		if ( ($p3 = intval($p3)) == 0 )
+			return false;
+		if ( ($p4 = intval($p4)) == 0 )
 			return false;
 		
 		if ( !mysql_query("UPDATE `placements` SET `p1` = ".$p1." WHERE `id` = ".$id) )
@@ -203,6 +209,8 @@ class Database
 		if ( !mysql_query("UPDATE `placements` SET `p2` = ".$p2." WHERE `id` = ".$id) )
 			return false;
 		if ( !mysql_query("UPDATE `placements` SET `p3` = ".$p3." WHERE `id` = ".$id) )
+			return false;
+		if ( !mysql_query("UPDATE `placements` SET `p4` = ".$p4." WHERE `id` = ".$id) )
 			return false;
 		return true;
 	}
@@ -217,22 +225,18 @@ class Database
 		return $this->genaricRemove("placements", $id);
 	}
 	
-	function addStudent($id, $first, $last, $grade, $homeroom)
+	function addStudent($first, $last, $location)
 	{
-		if ( ($id = intval($id)) == 0 )
-			return false;
-		if ( ($grade = intval($grade)) == 0 )
-			return false;
-			
 		$first = mysql_real_escape_string($first);
 		$last = mysql_real_escape_string($last);
 		
-		$homeroom = mysql_real_escape_string($homeroom);
+		$location = mysql_real_escape_string($location);
 		
-		if ( empty($first) || empty($last) )
+		if ( empty($first) || empty($last) || empty($location) )
 			return false;
 		
-		return mysql_query("INSERT INTO `students` (id, first, last, grade, homeroom) VALUES(".$id.", '".$first."', '".$last."', ".$grade.", '".$homeroom."')");
+		mysql_query("INSERT INTO `students` (first, last, location) VALUES('".$first."', '".$last."', '".$location."')");
+		return mysql_insert_id();
 	}
 	
 	function getStudent($id)
@@ -299,32 +303,7 @@ class Database
 	{
 		mysql_query("DELETE FROM `statistics`");
 	}
-	
-	function getHomerooms()
-	{
-		$homerooms = $this->genaricGetSet("homerooms");
-		$pivot = array();
 
-		foreach ( $homerooms as $k=>$v )
-		{
-			$pivot[$k] = $v['name'];
-		}
-
-		array_multisort($pivot, SORT_ASC, $homerooms);
-		return $homerooms;
-	}
-	
-	function addHomeroom($name)
-	{
-		$name = mysql_real_escape_string($name);
-		return mysql_query("INSERT INTO `homerooms` (name) VALUES('".$name."')");
-	}
-	
-	function removeHomeroom($id)
-	{
-		return $this->genaricRemove("homerooms", $id);
-	}
-	
 }
 
 $database = new Database();

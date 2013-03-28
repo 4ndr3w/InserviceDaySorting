@@ -56,18 +56,15 @@ if ( $_GET['by'] == "student" )
 	foreach ( $students as $student)
 	{
 		$placements = $database->getStudentPlacement($student['id']);
-		if ( $placements["p1"] != $seniorOptOutID )
+		echo "<div class=\"datablock ".($cur>($total/2)?"right":"left")."\">";
+		echo $student['id']." - ".$student['first']." ".$student['last']." - HR: ".$student['homeroom']."<br>\n";
+		for ( $i = 1; $i < 5; $i++ )
 		{
-			echo "<div class=\"datablock ".($cur>($total/2)?"right":"left")."\">";
-			echo $student['id']." - ".$student['first']." ".$student['last']." - HR: ".$student['homeroom']."<br>\n";
-			for ( $i = 1; $i < 4; $i++ )
-			{
-				$career = $database->getCareer($placements["p".$i]);
-				echo $i." - ".$career['location']." - ".$career['name']."<br>\n";
-			}
-			echo "<br></div>\n";
-			$cur++;
+			$career = $database->getCareer($placements["p".$i]);
+			echo $i." - ".$career['location']." - ".$career['name']."<br>\n";
 		}
+		echo "<br></div>\n";
+		$cur++;
 	}
 }
 else if ( $_GET['by'] == "career" )
@@ -85,7 +82,7 @@ else if ( $_GET['by'] == "career" )
 	{
 		if ( $career['id'] != $assemblyID )
 		{
-			for ( $i = 0; $i < 3; $i++ )
+			for ( $i = 0; $i < 4; $i++ )
 			{
 				if ( $career['id'] == $seniorOptOutID && $i != 0 )
 					break;

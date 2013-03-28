@@ -5,8 +5,7 @@ $databaseInfo = array(
 	"hostname" => "127.0.0.1",
 	"username" => "root",
 	"password" => "",
-	"database" => "careerday");
+	"database" => "inserviceday");
 
-$assemblyID = 999;
-$seniorOptOutID = 998;
+$eventName = "In-service";
 ?>

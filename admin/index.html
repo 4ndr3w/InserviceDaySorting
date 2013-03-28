@@ -66,7 +66,7 @@
 		}
 		
 		function deleteCareer(career){
-			if ( !confirm("Are you sure?\n\nRemoving a career that students have already signed up for will cause their choice to be skipped.") )
+			if ( !confirm("Are you sure?\n\nRemoving a class that participants have already signed up for will cause their choice to be skipped.") )
 				return;
 			var ID = {action:'del', id:career};
 			sendData("careerTable.php",ID, function(data){
@@ -99,7 +99,7 @@
 		
 		function deleteStudent(){
 			var _submit = document.getElementById("deleteButton").value;
-			if ( !confirm("Are you sure?\nALL data will be removed for student "+_submit) )
+			if ( !confirm("Are you sure?\nALL data will be removed for participant "+_submit) )
 				return;
 				
 			var ID = {id:_submit};
@@ -166,16 +166,16 @@
 				<button onClick="manualSortSpecificStudent()">Specific Manual Sort</button>
 			</section>
 			<section id="manageCareers">
-				<h2>Manage Careers</h2>
-				<button type="button" onclick="manageCareerList()">Refresh Career Table</button>
+				<h2>Manage Classes</h2>
+				<button type="button" onclick="manageCareerList()">Refresh Class Table</button>
 				<div id="manageCareers-inner"></div>
 				<br><br>
 			</section>
 
 			<section id="manageStudents">
-				<h2>Manage Students</h2>
-				<button type="button" onclick="genStudentlist()">Refresh Student Table</button>
-				<h3>Reset student</h3>
+				<h2>Manage Participants</h2>
+				<button type="button" onclick="genStudentlist()">Refresh Participant Table</button>
+				<h3>Reset Participant</h3>
 				<div id="resetStudent-inner"></div>
 				<div id="genScheduleHandouts-inner"></div>
 			</section>	

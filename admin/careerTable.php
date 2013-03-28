@@ -23,21 +23,19 @@ foreach ( $careers as $k=>$v )
 
 array_multisort($careersSortPivot, SORT_ASC, $careers);
 ?>
-<h3>Add a Career</h3>
+<h3>Add a Class</h3>
 <form>
 	<input type="hidden" name="action" value="add">
 	<input type="hidden" name="id" value="<?php echo $career['id']; ?>">
 	<td colspan="4"><input type="text" id="name" class="tableInput" placeholder="Name">
 	<input type="text" id="location" class="tableInput" placeholder="Location">
-	<input type="text" id="maxStudents" class="tableInput" placeholder="Student Limit">
+	<input type="text" id="maxStudents" class="tableInput" placeholder="Limit">
 	<button type="button" onclick="addCareer()">Add</button></td>
 </form>
 <a href="importCareers.php">Import from CSV</a>
 <br>
 <br>
-<a href="manageHomerooms.php">Manage Homerooms</a>
-
-<h3>Current List of Careers</h3>
+<h3>Current List of Classes</h3>
 <table class="centered" id="table-Careers">
 		<thead>
 			<tr>

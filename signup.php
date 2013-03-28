@@ -33,10 +33,10 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 		
 		function choicesAreUnique()
 		{
-			for ( a = 2; a <= 5; a++ )
+			for ( a = 3; a <= 7; a++ )
 			{
 				aVal = document.getElementById("f"+a).value;
-				for ( b = 2; b <= 5; b++ )
+				for ( b = 3; b <= 7; b++ )
 				{
 					bVal = document.getElementById("f"+b).value;
 					if ( a != b && aVal == bVal && aVal != 0 )
@@ -48,7 +48,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 
 		function getCareerNameForID(id)
 		{
-			var careerList = document.getElementById("f2").options;
+			var careerList = document.getElementById("f3").options;
 			for ( var i = 0; i < careerList.length; i++ )
 			{
 				if ( careerList[i].value == id )
@@ -64,7 +64,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 				return;
 			}
 
-			if ( num >= 2 && num <= 5 ) // Career lists
+			if ( num >= 3 && num <= 7 ) // Career lists
 			{
 				var careerList = document.getElementById("f5").options;
 				document.getElementById("c"+num).innerHTML = getCareerNameForID(document.getElementById("f"+num).value);
@@ -74,10 +74,10 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 
 			var process = 0;
 			var bar = 20;
-			for(i=0;i<6;i++){
+			for(i=0;i<8;i++){
 				if(document.getElementById("f"+i).value != "" && document.getElementById("f"+i).value != 0){
-					process = process + (100/7);
-					bar = bar + (860/7);
+					process = process + (100/9);
+					bar = bar + (860/9);
 				}
 			}
 			
@@ -86,7 +86,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 				width: bar + "px"},
 				1000,
 				function(){
-					if(bar >= ((860/7)*6) && (choicesAreUnique() || document.getElementById("optOutButton").checked) )
+					if(bar >= ((860/9)*8) && choicesAreUnique() )
 						$("#submitarea").slideDown();
 					else
 						$("#submitarea").slideUp();
@@ -111,11 +111,13 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 		{			
 			_first = document.getElementById("f0").value;
 			_last = document.getElementById("f1").value;
-			_c1 = document.getElementById("f2").value;
-			_c2 = document.getElementById("f3").value;
-			_c3 = document.getElementById("f4").value;
-			_c4 = document.getElementById("f5").value;
-			dataToSend = {first: _first, last: _last, c1: _c1, c2: _c2, c3: _c3, c4: _c4};
+			_location = document.getElementById("f2").value;
+			_c1 = document.getElementById("f3").value;
+			_c2 = document.getElementById("f4").value;
+			_c3 = document.getElementById("f5").value;
+			_c4 = document.getElementById("f6").value;
+			_c5 = document.getElementById("f7").value;
+			dataToSend = {first: _first, last: _last, location: _location, c1: _c1, c2: _c2, c3: _c3, c4: _c4, c5: _c5};
 			
 			$.ajax({
 				type: "POST",
@@ -135,7 +137,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 					}
 					else
 					{
-						alert("Thank you! Your choices have been recorded.\n");
+						alert("Thank you! Your choices have been recorded.\n"+data);
 						window.location.reload();
 					}
 				}
@@ -162,29 +164,22 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 				<section id="conformation">
 					<a onclick="">First Name: <span id="c0"></span><br></a>
 					<a onclick="">Last Name: <span id="c1"></span><br></a>
-					<a onclick="">Choice 1: <span id="c2"></span><br></a>
-					<a onclick="">Choice 2: <span id="c3"></span><br></a>
-					<a onclick="">Choice 3: <span id="c4"></span><br></a>
-					<a onclick="">Choice 4: <span id="c5"></span><br></a>
+					<a onclick="">Location: <span id="c2"></span><br></a>
+					<a onclick="">Choice 1: <span id="c3"></span><br></a>
+					<a onclick="">Choice 2: <span id="c4"></span><br></a>
+					<a onclick="">Choice 3: <span id="c5"></span><br></a>
+					<a onclick="">Choice 4: <span id="c6"></span><br></a>
+					<a onclick="">Choice 5: <span id="c7"></span><br></a>
 				</section>
 				<section id="formarea">
 					<div id="sect-0" class="sect">
 						First Name: <input type="text" id="f0" onblur="update(0)" onkeypress="return validateKeypress(event,1,999)"><br>
 						Last Name: <input type="text" id="f1" onblur="update(1)" onkeypress="return validateKeypress(event,1,999)"><br>
+						Home Location: <input type="text" id="f2" onblur="update(2)"><br>
 						<button id="next" type="button" onclick="showForm(1)" value="Next">Next</button>
 					</div>
 					<div id="sect-1" class="sect">
 						Choice 1:
-						<select id="f2" onchange="update(2)">
-							<option value="0" selected="selected" disabled="disabled">-Select One-</option>
-							<?php 
-							foreach ( $careers as $career )
-							{
-								echo "<option value=\"".$career['id']."\">".$career['name']."</option>";
-							}
-							?>
-						</select><br>
-						Choice 2:
 						<select id="f3" onchange="update(3)">
 							<option value="0" selected="selected" disabled="disabled">-Select One-</option>
 							<?php 
@@ -194,7 +189,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 							}
 							?>
 						</select><br>
-						Choice 3: 
+						Choice 2:
 						<select id="f4" onchange="update(4)">
 							<option value="0" selected="selected" disabled="disabled">-Select One-</option>
 							<?php 
@@ -204,8 +199,28 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 							}
 							?>
 						</select><br>
-						Choice 4:
+						Choice 3: 
 						<select id="f5" onchange="update(5)">
+							<option value="0" selected="selected" disabled="disabled">-Select One-</option>
+							<?php 
+							foreach ( $careers as $career )
+							{
+								echo "<option value=\"".$career['id']."\">".$career['name']."</option>";
+							}
+							?>
+						</select><br>
+						Choice 4:
+						<select id="f6" onchange="update(6)">
+							<option value="0" selected="selected" disabled="disabled">-Select One-</option>
+							<?php 
+							foreach ( $careers as $career )
+							{
+								echo "<option value=\"".$career['id']."\">".$career['name']."</option>";
+							}
+							?>
+						</select><br>
+						Choice 5:
+						<select id="f7" onchange="update(7)">
 							<option value="0" selected="selected" disabled="disabled">-Select One-</option>
 							<?php 
 							foreach ( $careers as $career )

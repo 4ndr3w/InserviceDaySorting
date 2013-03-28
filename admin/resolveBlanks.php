@@ -4,13 +4,13 @@ require_once "../db.php";
 if ( array_key_exists("id", $_POST) )
 {
 	if ( $database->getStudentPlacement($_POST['id']) )
-		$database->updateStudentPlacement($_POST['id'], $_POST['p1'], $_POST['p2'], $_POST['p3']);
+		$database->updateStudentPlacement($_POST['id'], $_POST['p1'], $_POST['p2'], $_POST['p3'], $_POST['p4']);
 	else
-		$database->setStudentPlacement($_POST['id'], $_POST['p1'], $_POST['p2'], $_POST['p3']);
+		$database->setStudentPlacement($_POST['id'], $_POST['p1'], $_POST['p2'], $_POST['p3'], $_POST['p4']);
 }
-
-if ( array_key_exists("specific", $_GET) && array_key_exists("id", $_POST) )
-	header("Location: index.html");
+echo mysql_error();
+//if ( array_key_exists("specific", $_GET) && array_key_exists("id", $_POST) )
+//	header("Location: index.html");
 
 
 $students = array();
@@ -33,8 +33,6 @@ foreach ( $students as $_student )
 	$_placements = $database->getStudentPlacement($_student['id']);
 	if ( empty($_placements) )
 	{
-		for ( $i = 0; $i < 3; $i++ )
-			$placements[0] = 0;
 		$studentIncomplete = true;
 	}
 	else
@@ -86,11 +84,6 @@ if ( empty($student) )
 				<td class="columnHeader">Name</td>
 				<td><?php echo $student['first']." ".$student['last']; ?></td>
 			</tr>
-		
-			<tr>
-				<td class="columnHeader">Grade</td>
-				<td><?php echo $student['grade']; ?></td>
-			</tr>
 		</table>
 		<br>
 		
@@ -99,7 +92,7 @@ if ( empty($student) )
 				<td colspan="100%" class="columnHeader">Choices</td>
 			</tr>
 			<?php 
-			for ($i = 0; $i < 4; $i++ )
+			for ($i = 0; $i < 5; $i++ )
 			{
 				$thisChoice = $choices['s'.($i+1)];
 			?>
@@ -121,10 +114,10 @@ if ( empty($student) )
 			</tr>
 			<tr>
 				<td class="columnHeader">Block</td>
-				<td class="columnHeader">Career</td>
+				<td class="columnHeader">Class</td>
 			</tr>
 			<?php
-			for ( $i = 0; $i < 3; $i++ )
+			for ( $i = 0; $i < 4; $i++ )
 			{
 				$thisBlock = ($i+1);
 			?>
@@ -133,29 +126,20 @@ if ( empty($student) )
 				<td>
 					<select name="p<?php echo $thisBlock; ?>">
 					<?php
-					if ( $placements['p'.$thisBlock] == $assemblyID )
-					{ ?>
-						<option selected="selected" value="<?php echo $assemblyID; ?>">Assembly</option>
+					if ( $placements['p'.$thisBlock] == 0 )
+					{
+					?>
+					<option value="0" selected="selected" disabled="disabled">Select One</option> 
 					<?php
 					}
-					else
+					foreach ( $careers as $career )
 					{
-						if ( $placements['p'.$thisBlock] == 0 )
+						$full = ($database->getNumberOfStudentsInCareer($career['id'], $thisBlock) >= $career['maxStudents']);
+						if ( !$full || $placements['p'.$thisBlock] == $career['id'] )
 						{
-						?>
-						<option value="0" selected="selected" disabled="disabled">Select One</option> 
-						<?php
-						}
-
-						foreach ( $careers as $career )
-						{
-							$full = ($database->getNumberOfStudentsInCareer($career['id'], $thisBlock) >= $career['maxStudents']);
-							if ( !$full || $placements['p'.$thisBlock] == $career['id'] )
-							{
-						?>
-						<option value="<?php echo $career['id']; ?>" <?php if ( $career['id'] == $placements['p'.$thisBlock] ) echo "selected=\"selected\""; ?>><?php echo $career['name']; if ( $full ) echo " --FULL--"; ?></option>
-						<?php
-							}
+					?>
+					<option value="<?php echo $career['id']; ?>" <?php if ( $career['id'] == $placements['p'.$thisBlock] ) echo "selected=\"selected\""; ?>><?php echo $career['name']; if ( $full ) echo " --FULL--"; ?></option>
+					<?php
 						}
 					}
 					?>
