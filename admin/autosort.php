@@ -14,9 +14,18 @@ if ( !array_key_exists("run", $_POST) )
 require_once "../db.php";
 $startTime = microtime(true);
 $itsRan = 0;
-function uniqueIteration($a, $b, $c)
+function uniqueIteration($a, $b, $c, $d)
 {
-	return ( $a != $b && $a != $c && $b != $c );
+	$values = array($a, $b, $c, $d);
+	foreach ( $values as $kA => $vA )
+	{
+		foreach ( $values as $kB => $vB )
+		{
+			if ( $kA != $kB && $vA == $vB )
+				return false;
+		}
+	}
+	return true;
 }
 
 class Placement
@@ -81,25 +90,26 @@ class Choice
 
 class Student
 {
-	function __construct($id, $grade, $c1, $c2, $c3, $c4)
+	function __construct($id, $c1, $c2, $c3, $c4, $c5)
 	{
 		$this->id = $id;
-		$this->grade = $grade;
 		$this->choices = array();
 		$this->choices[0] = new Choice($c1, 4, 0);
 		$this->choices[1] = new Choice($c2, 3, 0);
 		$this->choices[2] = new Choice($c3, 2, 0);
 		$this->choices[3] = new Choice($c4, 1, 0);	
+		$this->choices[4] = new Choice($c5, 1, 0);	
 		$this->placements = array();
 		$this->placements[0] = new Placement(0, -1);
 		$this->placements[1] = new Placement(0, -1);
 		$this->placements[2] = new Placement(0, -1);
+		$this->placements[3] = new Placement(0, -1);
 	}
 	
 	function getMostPopularChoiceGroup()
 	{
 		$choiceGroups = array();
-		for ($i = 0; $i < 4; $i++ )
+		for ($i = 0; $i < 5; $i++ )
 		{
 			$choiceGroups[$this->choices[$i]->getGroup()]++;
 		}
@@ -119,7 +129,7 @@ class Student
 	function getChoiceGroupsByPopularity()
 	{
 		$choiceGroups = array();
-		for ($i = 0; $i < 4; $i++ )
+		for ($i = 0; $i < 5; $i++ )
 		{
 			$choiceGroups[$this->choices[$i]->getGroup()]++;
 		}
@@ -178,7 +188,7 @@ class Career
 		$this->id = $id;
 		$this->max = $max;
 		
-		$this->blockSizes = array(0,0,0);
+		$this->blockSizes = array(0,0,0,0);
 	}
 	
 	function addToBlock($blockNum)
@@ -213,32 +223,7 @@ foreach ( $_students as $student )
 {
 	$choices = $database->getStudentChoices($student['id']);
 	$placement = $database->getStudentPlacement($student['id']);
-	$thisStudent = 0;
-	if ( $placement['p1'] == $seniorOptOutID || $placement['p2'] == $seniorOptOutID || $placement['p3'] == $seniorOptOutID )
-	{
-		$thisStudent = new Student($student['id'], $student['grade'], $seniorOptOutID, $seniorOptOutID, $seniorOptOutID, $seniorOptOutID);
-		for ( $z = 0; $z < 3; $z++ )
-		{
-			$thisStudent->placements[$z]->id = $seniorOptOutID;
-			$thisStudent->placements[$z]->isStatic = true;
-		}
-	}
-	else
-	{
-		$thisStudent = new Student($student['id'], $student['grade'], $choices['s1'], $choices['s2'], $choices['s3'], $choices['s4']);
-		switch ( $thisStudent->grade )
-		{
-			case 9:
-				$thisStudent->assignBlock(0, new Placement($assemblyID, 100, true));
-				break;
-			case 10:
-				$thisStudent->assignBlock(1, new Placement($assemblyID, 100, true));
-				break;
-			case 11:
-				$thisStudent->assignBlock(2, new Placement($assemblyID, 100, true));
-				break;
-		}
-	}
+	$thisStudent = new Student($student['id'], $student['grade'], $choices['s1'], $choices['s2'], $choices['s3'], $choices['s4']);
 	$students[$thisStudent->id] = $thisStudent;
 }
 
@@ -266,33 +251,36 @@ function attemptSchedule($scheduledCareers, $newCareerID, $student, $careers, &$
 				$c = $_c;
 				if ( $scheduledCareers[2]->isStatic() ) // Don't move static events!
 					$c = 2;
-											
-				if ( uniqueIteration($a, $b, $c) )
+				for ( $_d = 0; $_d < 3; $_d++ )
 				{
-					$itsRan++;
-					$invalid = false;
-					//echo "In This Iteration: ".$a." - ".$b." - ".$c."\n";
-					$thisScheduleIteration = array($a=>$scheduledCareers[0], $b => $scheduledCareers[1], $c => $scheduledCareers[2]);	
-											
-					for ($k = 0; $k < 3; $k++ )
+					$d = $_d;							
+					if ( uniqueIteration($a, $b, $c, $d) )
 					{
-						$careerObj = $thisScheduleIteration[$k];
-						$blockNum = $k;
-						$careerID = 0;
-						if ( is_object($careerObj) )
-							$careerID = $careerObj->id;
-						if ( $careerID != 0 )
+						$itsRan++;
+						$invalid = false;
+						//echo "In This Iteration: ".$a." - ".$b." - ".$c."\n";
+						$thisScheduleIteration = array($a => $scheduledCareers[0], $b => $scheduledCareers[1], $c => $scheduledCareers[2], $d => $scheduledCareers[2]);	
+											
+						for ($k = 0; $k < 4; $k++ )
 						{
-							if ( $careers[$careerID]->blockIsFull($blockNum) )
-								$invalid = true;
-						}
+							$careerObj = $thisScheduleIteration[$k];
+							$blockNum = $k;
+							$careerID = 0;
+							if ( is_object($careerObj) )
+								$careerID = $careerObj->id;
+							if ( $careerID != 0 )
+							{
+								if ( $careers[$careerID]->blockIsFull($blockNum) )
+									$invalid = true;
+							}
 											
-					}
-					if ( !$invalid )
-					{
-						$thisStudentSortSuccess = true;
-						$student->placements = $thisScheduleIteration;									
-						break;
+						}
+						if ( !$invalid )
+						{
+							$thisStudentSortSuccess = true;
+							$student->placements = $thisScheduleIteration;									
+							break;
+						}
 					}
 				}
 										

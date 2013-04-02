@@ -175,10 +175,23 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 				</section>
 				<section id="formarea">
 					<div id="sect-0" class="sect">
-						ID: <input type="text" id="f0" onblur="update(0)"><br>
+						ID: <input type="text" id="f0" onblur="update(0)" onkeypress="return validateKeypress(event,2,999)"><br>
 						First Name: <input type="text" id="f1" onblur="update(1)" onkeypress="return validateKeypress(event,1,999)"><br>
 						Last Name: <input type="text" id="f2" onblur="update(2)" onkeypress="return validateKeypress(event,1,999)"><br>
-						Building: <input type="text" id="f3" onblur="update(3)"><br>
+						Building: <select id="f3" onchange="update(3)">
+									<option value="" selected="selected" disabled="disabled">-Select One-</option>
+									<option value="High School">High School</option>
+								    <option value="Manor Middle">Manor Middle</option>
+									<option value="Marticville Middle">Marticville Middle</option>
+									<option value="Eshleman">Eshleman</option>
+									<option value="Hambright">Hambright</option>
+									<option value="Martic">Martic</option>
+									<option value="Pequea">Pequea</option>
+									<option value="Conestoga">Conestoga</option>
+									<option value="Letort">Letort</option>
+									<option value="Central Manor">Central Manor</option>
+									
+								  </select><br>
 						<button id="next" type="button" onclick="showForm(1)" value="Next">Next</button>
 					</div>
 					<div id="sect-1" class="sect">
