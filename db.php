@@ -150,16 +150,6 @@ class Database
 		if ( ($c5 = intval($c5)) == 0 )
 			return false;
 			
-		$data = array($c1, $c2, $c3, $c4, $c5);
-		foreach ( $data as $ak => $a )
-		{
-			foreach ( $data as $bk => $b )
-			{
-				if ( $ak != $bk && $a == $b )
-					return false;
-			}
-		}
-			
 		return mysql_query("INSERT INTO `selections` (id, s1,s2,s3,s4,s5) VALUES (".$id.", ".$c1.", ".$c2.", ".$c3.", ".$c4.", ".$c5.")");	
 	}
 	
@@ -225,8 +215,11 @@ class Database
 		return $this->genaricRemove("placements", $id);
 	}
 	
-	function addStudent($first, $last, $location)
+	function addStudent($id, $first, $last, $location)
 	{
+		if ( ($id = intval($id)) == 0 )
+			return false;
+		
 		$first = mysql_real_escape_string($first);
 		$last = mysql_real_escape_string($last);
 		
@@ -235,7 +228,7 @@ class Database
 		if ( empty($first) || empty($last) || empty($location) )
 			return false;
 		
-		mysql_query("INSERT INTO `students` (first, last, location) VALUES('".$first."', '".$last."', '".$location."')");
+		mysql_query("INSERT INTO `students` (id, first, last, location) VALUES(".$id.", '".$first."', '".$last."', '".$location."')");
 		return mysql_insert_id();
 	}
 	
