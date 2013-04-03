@@ -116,7 +116,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 			_c1 = document.getElementById("f4").value;
 			_c2 = document.getElementById("f5").value;
 			_c3 = document.getElementById("f6").value;
-			_c4 = document.getElementById("f6").value;
+			_c4 = document.getElementById("f7").value;
 			_c5 = document.getElementById("f8").value;
 			dataToSend = {id: _id, first: _first, last: _last, location: _location, c1: _c1, c2: _c2, c3: _c3, c4: _c4, c5: _c5};
 			

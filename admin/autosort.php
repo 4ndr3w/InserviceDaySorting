@@ -94,10 +94,10 @@ class Student
 	{
 		$this->id = $id;
 		$this->choices = array();
-		$this->choices[0] = new Choice($c1, 4, 0);
-		$this->choices[1] = new Choice($c2, 3, 0);
-		$this->choices[2] = new Choice($c3, 2, 0);
-		$this->choices[3] = new Choice($c4, 1, 0);	
+		$this->choices[0] = new Choice($c1, 5, 0);
+		$this->choices[1] = new Choice($c2, 4, 0);
+		$this->choices[2] = new Choice($c3, 3, 0);
+		$this->choices[3] = new Choice($c4, 2, 0);	
 		$this->choices[4] = new Choice($c5, 1, 0);	
 		$this->placements = array();
 		$this->placements[0] = new Placement(0, -1);
@@ -223,7 +223,7 @@ foreach ( $_students as $student )
 {
 	$choices = $database->getStudentChoices($student['id']);
 	$placement = $database->getStudentPlacement($student['id']);
-	$thisStudent = new Student($student['id'], $student['grade'], $choices['s1'], $choices['s2'], $choices['s3'], $choices['s4']);
+	$thisStudent = new Student($student['id'], $choices['s1'], $choices['s2'], $choices['s3'], $choices['s4'], $choices['s5']);
 	$students[$thisStudent->id] = $thisStudent;
 }
 
@@ -234,33 +234,21 @@ function attemptSchedule($scheduledCareers, $newCareerID, $student, $careers, &$
 		if ( $placement->id != 0 )
 			$careers[$placement->id]->removeFromBlock($k);
 	}
-	
 	$thisStudentSortSuccess = false;
-	for ( $_a = 0; $_a < 3; $_a++ )
+	for ( $a = 0; $a < 4; $a++ )
 	{
-		$a = $_a;
-		if ( $scheduledCareers[0]->isStatic() ) // Don't move static events!
-			$a = 0;
-		for ( $_b = 0; $_b < 3; $_b++ )
+		for ( $b = 0; $b < 4; $b++ )
 		{
-			$b = $_b;
-			if ( $scheduledCareers[1]->isStatic() ) // Don't move static events!
-				$b = 1;
-			for ( $_c = 0; $_c < 3; $_c++ )
+			for ( $c = 0; $c < 4; $c++ )
 			{
-				$c = $_c;
-				if ( $scheduledCareers[2]->isStatic() ) // Don't move static events!
-					$c = 2;
-				for ( $_d = 0; $_d < 3; $_d++ )
-				{
-					$d = $_d;							
+				for ( $d = 0; $d < 4; $d++ )
+				{		
 					if ( uniqueIteration($a, $b, $c, $d) )
 					{
 						$itsRan++;
 						$invalid = false;
 						//echo "In This Iteration: ".$a." - ".$b." - ".$c."\n";
-						$thisScheduleIteration = array($a => $scheduledCareers[0], $b => $scheduledCareers[1], $c => $scheduledCareers[2], $d => $scheduledCareers[2]);	
-											
+						$thisScheduleIteration = array($a => $scheduledCareers[0], $b => $scheduledCareers[1], $c => $scheduledCareers[2], $d => $scheduledCareers[3]);					
 						for ($k = 0; $k < 4; $k++ )
 						{
 							$careerObj = $thisScheduleIteration[$k];
@@ -271,7 +259,9 @@ function attemptSchedule($scheduledCareers, $newCareerID, $student, $careers, &$
 							if ( $careerID != 0 )
 							{
 								if ( $careers[$careerID]->blockIsFull($blockNum) )
+								{
 									$invalid = true;
+								}
 							}
 											
 						}
@@ -283,16 +273,11 @@ function attemptSchedule($scheduledCareers, $newCareerID, $student, $careers, &$
 						}
 					}
 				}
-										
+				if ( $thisStudentSortSuccess ) break;					
 			}
 			if ( $thisStudentSortSuccess ) break;
 		}
 		if ( $thisStudentSortSuccess ) break;
-	}
-							
-	if ( !$thisStudentSortSuccess && $isChoice )
-	{
-		$student->choices[$highestChoiceNumber]->possible = false;
 	}
 	
 	foreach ( $student->placements as $k => $placement )
@@ -304,58 +289,58 @@ function attemptSchedule($scheduledCareers, $newCareerID, $student, $careers, &$
 	return $thisStudentSortSuccess;
 }
 
-for ( $i = 0; $i <= 4; $i++ )
+for ( $i = 0; $i <= 5; $i++ )
 {
-	foreach ( $students as $student )
+	foreach ( $students as $studentKey => $student )
 	{
-		if ( $student->grade == $currentSortingGrade )
+		$skip = $student->isFullySorted();
+		$blocksFilled = 0;
+		for ( $z = 0; $z < 4; $z++ )
 		{
-			$skip = $student->isFullySorted();
-			$blocksFilled = 0;
-			for ( $z = 0; $z < 3; $z++ )
+			if ( !$student->blockIsOpen($z) )
+				$blocksFilled++;
+		}
+		$skip = ($blocksFilled==4);
+		$highestChoiceNumber = $i;
+		if ( $highestChoiceNumber == -1 )
+			$skip = true;
+			
+		if ( !$skip )
+		{
+			$highestChoiceNumber = $student->getHighestChoiceNumber();
+			$highestChoiceID = $student->choices[$highestChoiceNumber];
+			if ( $highestChoiceID != -1)
 			{
-				if ( !$student->blockIsOpen($z) )
-					$blocksFilled++;
-			}
-			$skip = ($blocksFilled==3);
-			$highestChoiceNumber = $i;
-			if ( $highestChoiceNumber == -1 )
-				$skip = true;
-				
-			if ( !$skip )
-			{
-				$highestChoiceNumber = $student->getHighestChoiceNumber();
-				$highestChoiceID = $student->choices[$highestChoiceNumber];
-				if ( $highestChoiceID != -1)
+				$thisChoice = new Placement($highestChoiceID->id, $highestChoiceNumber);
+				$scheduledCareers = array();
+						
+				for ( $z = 0; $z < 4; $z++ ) // Fill empty slots
 				{
-					$thisChoice = new Placement($highestChoiceID->id, $highestChoiceNumber);
-					$scheduledCareers = array();
-							
-					for ( $z = 0; $z < 3; $z++ ) // Fill empty slots
+					if ( !$student->blockIsOpen($z) )
+						$scheduledCareers[$z] = $student->placements[$z];
+					else
+						$scheduledCareers[$z] = new Placement(0, 0);
+				}
+						
+				for ( $z = 0; $z < 4; $z++ ) // Add next choice to list
+				{
+					if ( $scheduledCareers[$z]->id == 0 )
 					{
-						if ( !$student->blockIsOpen($z) )
-							$scheduledCareers[$z] = $student->placements[$z];
-						else
-							$scheduledCareers[$z] = new Placement(0, 0);
+						$scheduledCareers[$z] = $thisChoice;
+						break;
 					}
-							
-					for ( $z = 0; $z < 3; $z++ ) // Add next choice to list
-					{
-						if ( $scheduledCareers[$z]->id == 0 )
-						{
-							$scheduledCareers[$z] = $thisChoice;
-							break;
-						}
-					}
-	
-					attemptSchedule($scheduledCareers, $highestChoiceID->id, $student, $careers, $itsRan);
+				}
+				
+				if ( !attemptSchedule($scheduledCareers, $highestChoiceID->id, $student, $careers, $itsRan) )
+				{
+					$student->choices[$highestChoiceNumber]->possible = false;
 				}
 			}
 		}
 	}
 }
 
-
+/*
 foreach ( $students as $student )
 {
 	if ( !$student->isFullySorted() )
@@ -372,7 +357,7 @@ foreach ( $students as $student )
 			if ( $student->isFullySorted() )
 				break;
 			$scheduledCareers = $student->placements;
-			for ( $z = 0; $z < 3; $z++ ) // Add next choice to list
+			for ( $z = 0; $z < 4; $z++ ) // Add next choice to list
 			{
 				if ( $scheduledCareers[$z]->id == 0 )
 				{
@@ -384,7 +369,7 @@ foreach ( $students as $student )
 		}
 	}
 }
-
+*/
 
 echo "--------------------<br>\n";
 $stats = array("success"=>0, "failed"=>0, "total"=>0);
@@ -393,8 +378,7 @@ foreach ( $students as $student )
 {
 	$stats['total']++;
 	( $student->isFullySorted() ? $stats['success']++ : $stats['failed']++ );
-	mysql_query("INSERT INTO `placements` (id, p1, p2, p3) VALUES(".$student->id.", ".$student->placements[0]->id.", ".$student->placements[1]->id.", ".$student->placements[2]->id.")");
-
+	mysql_query("INSERT INTO `placements` (id, p1, p2, p3, p4) VALUES(".$student->id.", ".$student->placements[0]->id.", ".$student->placements[1]->id.", ".$student->placements[2]->id.", ".$student->placements[3]->id.")");
 	foreach ( $student->placements as $placement )
 	{
 		if ( $placement->id == $student->choices[0]->id )
