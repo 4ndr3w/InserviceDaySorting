@@ -13,7 +13,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 <!DOCTYPE html>
 <html>
 	<head>
-		<title><?php echo $eventName; ?> Selection</title>
+		<title><?php echo $database->getConfig("siteName"); ?></title>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="main.css">
 		<script src="jquery.js"></script>
@@ -150,7 +150,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 	<body onload="init()">
 		<div id="container">
 			<section id="header">
-				<h1><?php echo $eventName; ?></h1>
+				<h1><?php echo $database->getConfig("siteName"); ?></h1>
 			</section>
 			<div id="content">
 				<section id="process">
@@ -180,17 +180,18 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 						Last Name: <input type="text" id="f2" onblur="update(2)" onkeypress="return validateKeypress(event,1,999)"><br>
 						Building: <select id="f3" onchange="update(3)">
 									<option value="" selected="selected" disabled="disabled">-Select One-</option>
-									<option value="High School">High School</option>
-								    <option value="Manor Middle">Manor Middle</option>
-									<option value="Marticville Middle">Marticville Middle</option>
+									<option value="Central Manor">Central Manor</option>
+									<option value="Conestoga">Conestoga</option>
+									<option value="District Office">District Office</option>
 									<option value="Eshleman">Eshleman</option>
 									<option value="Hambright">Hambright</option>
-									<option value="Martic">Martic</option>
-									<option value="Pequea">Pequea</option>
-									<option value="Conestoga">Conestoga</option>
+									<option value="High School">High School</option>
 									<option value="Letort">Letort</option>
-									<option value="Central Manor">Central Manor</option>
-									
+									<option value="Letort">Maintenance</option>
+								    <option value="Manor Middle">Manor Middle</option>
+									<option value="Martic">Martic</option>
+									<option value="Marticville Middle">Marticville Middle</option>
+									<option value="Pequea">Pequea</option>
 								  </select><br>
 						<button id="next" type="button" onclick="showForm(1)" value="Next">Next</button>
 					</div>

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title> Admin Dashboard </title>
+		<title>Admin Dashboard</title>
 		<link rel="stylesheet" href="admin.css">
 		<script src="../jquery.js"></script>
 		<script src="../jquery.chromatable.js"></script>
@@ -154,7 +154,7 @@
 	<body onload="init()">
 		<div id="container">
 			<div id="header">
-				<h1>Career Day Dashboard</h1>
+				<h1>Dashboard</h1>
 			</div>
 			<section id="autosort">
 				<h2>Sorting</h2>
@@ -164,6 +164,7 @@
 				Running a manual sort will not overwrite any completed placement data.<br>
 				<form action="resolveBlanks.php" method="get"><input type="submit" value="Run Manual Sort"></form>
 				<button onClick="manualSortSpecificStudent()">Specific Manual Sort</button>
+				
 			</section>
 			<section id="manageCareers">
 				<h2>Manage Classes</h2>
@@ -179,6 +180,7 @@
 				<div id="resetStudent-inner"></div>
 				<div id="genScheduleHandouts-inner"></div>
 			</section>	
+
 		</div>
 	</body>
 </html>

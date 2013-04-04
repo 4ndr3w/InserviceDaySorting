@@ -296,6 +296,33 @@ class Database
 	{
 		mysql_query("DELETE FROM `statistics`");
 	}
+	
+	function getConfig($key, $default=false)
+	{
+		$key = mysql_real_escape_string($key);
+		$result = mysql_query("SELECT * FROM config WHERE `key` = '".$key."'");
+		if ( !$result || mysql_num_rows($result) == 0 )
+		{
+			return $default;
+		}
+		return mysql_result($result, 0, "value");
+	}
+	
+	function setConfig($key, $value)
+	{
+		$key = mysql_real_escape_string($key);
+		$value = mysql_real_escape_string($value);
+		if ( $this->getConfig($key) )
+		{
+			mysql_query("UPDATE config SET `value` = '".$value."' WHERE `key` = '".$key."'");
+		}
+		else
+		{
+			mysql_query("INSERT INTO config (`key`, `value`) VALUES('".$key."', '".$value."')");
+		}
+		echo mysql_error();
+	}
+		
 
 }
 

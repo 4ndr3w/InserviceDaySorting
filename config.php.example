@@ -6,6 +6,4 @@ $databaseInfo = array(
 	"username" => "root",
 	"password" => "",
 	"database" => "inserviceday");
-
-$eventName = "In-service";
 ?>
