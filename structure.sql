@@ -24,6 +24,20 @@ CREATE TABLE `careers` (
 
 
 
+# Dump of table config
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `config`;
+
+CREATE TABLE `config` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `key` text,
+  `value` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
 # Dump of table placements
 # ------------------------------------------------------------
 
