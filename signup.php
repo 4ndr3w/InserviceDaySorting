@@ -187,7 +187,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 									<option value="Hambright">Hambright</option>
 									<option value="High School">High School</option>
 									<option value="Letort">Letort</option>
-									<option value="Letort">Maintenance</option>
+									<option value="Maintenance">Maintenance</option>
 								    <option value="Manor Middle">Manor Middle</option>
 									<option value="Martic">Martic</option>
 									<option value="Marticville Middle">Marticville Middle</option>
