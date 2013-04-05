@@ -152,6 +152,18 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 			<section id="header">
 				<h1><?php echo $database->getConfig("siteName"); ?></h1>
 			</section>
+			<?php
+			$msg = trim($database->getConfig("bannerMsg"));
+			if ( !empty($msg) )
+			{
+			?>
+			<section id="msgBox">
+				<?php echo $msg; ?>
+			</section>
+			<?php
+			}
+			?>
+			
 			<div id="content">
 				<section id="process">
 					Process: <span id="precent">0</span>% complete.

@@ -17,7 +17,7 @@ if ( array_key_exists("key", $_POST) && array_key_exists("value", $_POST) )
 		function editValue(_key)
 		{
 			_value = prompt("New value for '"+_key+"':");
-			if ( _value )
+			if ( _value != null )
 			{
 				var req = $.ajax({
 					url: "configEdit.php",

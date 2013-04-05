@@ -312,7 +312,7 @@ class Database
 	{
 		$key = mysql_real_escape_string($key);
 		$value = mysql_real_escape_string($value);
-		if ( $this->getConfig($key) )
+		if ( mysql_num_rows(mysql_query("SELECT * FROM config WHERE `key` = '".$key."'")) != 0 )
 		{
 			mysql_query("UPDATE config SET `value` = '".$value."' WHERE `key` = '".$key."'");
 		}
