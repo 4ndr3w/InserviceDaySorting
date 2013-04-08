@@ -70,7 +70,7 @@ class Database
 		return $this->genaricGet("careers", $id);
 	}
 	
-	function getCareers($includeHidden = true)
+	function getCareers($includeHidden = true, $idAsKey = false)
 	{
 		$result = 0;
 		if ( $includeHidden )
@@ -203,6 +203,19 @@ class Database
 		if ( !mysql_query("UPDATE `placements` SET `p4` = ".$p4." WHERE `id` = ".$id) )
 			return false;
 		return true;
+	}
+	
+	function updateSpecificPlacementBlock($id, $block, $newID)
+	{
+		if ( ($id = intval($id)) == 0 )
+			return false;
+			
+		if ( ($block = intval($block)) == 0 )
+			return false;
+		if ( ($newID = intval($newID)) == 0 )
+			return false;
+		
+		return mysql_query("UPDATE `placements` SET `p".$block."` = ".$newID." WHERE `id` = ".$id);
 	}
 	
 	function getStudentPlacement($id)
