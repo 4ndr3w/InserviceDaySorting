@@ -205,6 +205,19 @@ class Database
 		return true;
 	}
 	
+	function updateSpecificPlacementBlock($id, $block, $newID)
+	{
+		if ( ($id = intval($id)) == 0 )
+			return false;
+			
+		if ( ($block = intval($block)) == 0 )
+			return false;
+		if ( ($newID = intval($newID)) == 0 )
+			return false;
+		
+		return mysql_query("UPDATE `placements` SET `p".$block."` = ".$newID." WHERE `id` = ".$id);
+	}
+	
 	function getStudentPlacement($id)
 	{
 		return $this->genaricGet("placements", $id);
