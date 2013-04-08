@@ -22,18 +22,15 @@ body{
 
 #header h1{
 	margin:0;
+	padding-bottom:0px;
 }
 
 #msgBox{
-	margin: 10px 0 10px 0;
-	padding-top: 5px;
 	padding-bottom: 5px;
 	width:1000px;
-	background-color:#C8C8C8;
 	color: white;
 	font-size:12px;
 	text-align:center;
-	border-radius:10px;  
 }
 
 #process{

@@ -151,18 +151,21 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 		<div id="container">
 			<section id="header">
 				<h1><?php echo $database->getConfig("siteName"); ?></h1>
+				
+				<?php
+				$msg = trim($database->getConfig("bannerMsg"));
+				if ( !empty($msg) )
+				{
+				?>
+				<section id="msgBox">
+					<?php echo $msg; ?>
+				</section>
+				<?php
+				}
+				?>
+				
 			</section>
-			<?php
-			$msg = trim($database->getConfig("bannerMsg"));
-			if ( !empty($msg) )
-			{
-			?>
-			<section id="msgBox">
-				<?php echo $msg; ?>
-			</section>
-			<?php
-			}
-			?>
+			
 			
 			<div id="content">
 				<section id="process">
