@@ -47,7 +47,7 @@ if ( $_GET['by'] == "student" )
 	$pivot = array();
 	foreach ( $students as $k=>$v )
 	{
-		$pivot[$k] = $v['homeroom'];
+		$pivot[$k] = $v['location'];
 	}
 
 	array_multisort($pivot, SORT_DESC, $students);
@@ -57,7 +57,7 @@ if ( $_GET['by'] == "student" )
 	{
 		$placements = $database->getStudentPlacement($student['id']);
 		echo "<div class=\"datablock ".($cur>($total/2)?"right":"left")."\">";
-		echo $student['id']." - ".$student['first']." ".$student['last']." - HR: ".$student['homeroom']."<br>\n";
+		echo $student['id']." - ".$student['first']." ".$student['last']."<br>\n";
 		for ( $i = 1; $i < 5; $i++ )
 		{
 			$career = $database->getCareer($placements["p".$i]);
@@ -91,7 +91,7 @@ else if ( $_GET['by'] == "career" )
 				?>
 				<table border="1" class="datablock">
 				<tr>
-					<td colspan="100%" class="title"><?php echo "<strong>".$career['name']." - Block ".($i+1)." - ".$num." students</strong><br>\n"; ?></td>
+					<td colspan="100%" class="title"><?php echo "<strong>".$career['name']." - Block ".($i+1)." - ".$num." participants</strong><br>\n"; ?></td>
 				</tr>
 			
 				<tr>

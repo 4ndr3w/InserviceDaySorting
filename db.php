@@ -70,7 +70,7 @@ class Database
 		return $this->genaricGet("careers", $id);
 	}
 	
-	function getCareers($includeHidden = true)
+	function getCareers($includeHidden = true, $idAsKey = false)
 	{
 		$result = 0;
 		if ( $includeHidden )
