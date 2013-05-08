@@ -1,5 +1,5 @@
 <?php
-/*
+
 if ( !array_key_exists("run", $_POST) )
 {
 ?>
@@ -10,7 +10,7 @@ if ( !array_key_exists("run", $_POST) )
 <?php
 	die();
 }
-*/
+
 require_once "../db.php";
 $startTime = microtime(true);
 $itsRan = 0;
@@ -227,8 +227,7 @@ foreach ( $_students as $k => $student )
 	$choices = $database->getStudentChoices($student['id']);
 	$placement = $database->getStudentPlacement($student['id']);
 	$thisStudent = new Student($student['id'], $choices['s1'], $choices['s2'], $choices['s3'], $choices['s4']);
-	
-	echo $i." ".$fourthOfSignups*($currentFairBlock+1)." ".$currentFairBlock." - ".$k."\n";
+
 	
 	$thisStudent->assignBlock($currentFairBlock, new Placement($fairID, 100, true));
 	
