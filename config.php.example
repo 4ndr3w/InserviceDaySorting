@@ -6,4 +6,6 @@ $databaseInfo = array(
 	"username" => "root",
 	"password" => "",
 	"database" => "inserviceday");
+	
+$fairID = 999;
 ?>

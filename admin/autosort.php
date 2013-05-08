@@ -1,5 +1,5 @@
 <?php
-
+/*
 if ( !array_key_exists("run", $_POST) )
 {
 ?>
@@ -10,7 +10,7 @@ if ( !array_key_exists("run", $_POST) )
 <?php
 	die();
 }
-
+*/
 require_once "../db.php";
 $startTime = microtime(true);
 $itsRan = 0;
@@ -90,15 +90,14 @@ class Choice
 
 class Student
 {
-	function __construct($id, $c1, $c2, $c3, $c4, $c5)
+	function __construct($id, $c1, $c2, $c3, $c4)
 	{
 		$this->id = $id;
 		$this->choices = array();
-		$this->choices[0] = new Choice($c1, 5, 0);
-		$this->choices[1] = new Choice($c2, 4, 0);
-		$this->choices[2] = new Choice($c3, 3, 0);
-		$this->choices[3] = new Choice($c4, 2, 0);	
-		$this->choices[4] = new Choice($c5, 1, 0);	
+		$this->choices[0] = new Choice($c1, 4, 0);
+		$this->choices[1] = new Choice($c2, 3, 0);
+		$this->choices[2] = new Choice($c3, 2, 0);
+		$this->choices[3] = new Choice($c4, 1, 0);		
 		$this->placements = array();
 		$this->placements[0] = new Placement(0, -1);
 		$this->placements[1] = new Placement(0, -1);
@@ -109,7 +108,7 @@ class Student
 	function getMostPopularChoiceGroup()
 	{
 		$choiceGroups = array();
-		for ($i = 0; $i < 5; $i++ )
+		for ($i = 0; $i < 4; $i++ )
 		{
 			$choiceGroups[$this->choices[$i]->getGroup()]++;
 		}
@@ -129,7 +128,7 @@ class Student
 	function getChoiceGroupsByPopularity()
 	{
 		$choiceGroups = array();
-		for ($i = 0; $i < 5; $i++ )
+		for ($i = 0; $i < 4; $i++ )
 		{
 			$choiceGroups[$this->choices[$i]->getGroup()]++;
 		}
@@ -219,11 +218,23 @@ foreach ( $_careers as $career )
 }
 
 // Convert mysql data to an array of Student objects, also assign the assembly block as static
-foreach ( $_students as $student )
+
+$fourthOfSignups = floor(count($_students)/4);
+$currentFairBlock = 0;
+$i = 0;
+foreach ( $_students as $k => $student )
 {
 	$choices = $database->getStudentChoices($student['id']);
 	$placement = $database->getStudentPlacement($student['id']);
-	$thisStudent = new Student($student['id'], $choices['s1'], $choices['s2'], $choices['s3'], $choices['s4'], $choices['s5']);
+	$thisStudent = new Student($student['id'], $choices['s1'], $choices['s2'], $choices['s3'], $choices['s4']);
+	
+	echo $i." ".$fourthOfSignups*($currentFairBlock+1)." ".$currentFairBlock." - ".$k."\n";
+	
+	$thisStudent->assignBlock($currentFairBlock, new Placement($fairID, 100, true));
+	
+	if ( $i >= $fourthOfSignups*($currentFairBlock+1) && $currentFairBlock < 3 )
+		$currentFairBlock++; 
+	$i++;
 	$students[$thisStudent->id] = $thisStudent;
 }
 
@@ -235,14 +246,26 @@ function attemptSchedule($scheduledCareers, $newCareerID, $student, $careers, &$
 			$careers[$placement->id]->removeFromBlock($k);
 	}
 	$thisStudentSortSuccess = false;
-	for ( $a = 0; $a < 4; $a++ )
+	for ( $_a = 0; $_a < 4; $_a++ )
 	{
-		for ( $b = 0; $b < 4; $b++ )
+		$a = $_a;
+		if ( $scheduledCareers[0]->isStatic() ) // Don't move static events!
+					$a = 0;
+		for ( $_b = 0; $_b < 4; $_b++ )
 		{
-			for ( $c = 0; $c < 4; $c++ )
+			$b = $_b;
+			if ( $scheduledCareers[1]->isStatic() ) // Don't move static events!
+						$b = 1;
+			for ( $_c = 0; $_c < 4; $_c++ )
 			{
-				for ( $d = 0; $d < 4; $d++ )
-				{		
+				$c = $_c;
+				if ( $scheduledCareers[2]->isStatic() ) // Don't move static events!
+							$c = 2;
+				for ( $_d = 0; $_d < 4; $_d++ )
+				{
+					$d = $_d;
+					if ( $scheduledCareers[3]->isStatic() ) // Don't move static events!
+								$d = 3;		
 					if ( uniqueIteration($a, $b, $c, $d) )
 					{
 						$itsRan++;
@@ -309,6 +332,7 @@ for ( $i = 0; $i <= 5; $i++ )
 		{
 			$highestChoiceNumber = $student->getHighestChoiceNumber();
 			$highestChoiceID = $student->choices[$highestChoiceNumber];
+			
 			if ( $highestChoiceID != -1)
 			{
 				$thisChoice = new Placement($highestChoiceID->id, $highestChoiceNumber);

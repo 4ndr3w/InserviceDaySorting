@@ -22,7 +22,7 @@ CREATE TABLE `careers` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-
+INSERT INTO `careers` (`id`, `name`, `location`, `maxStudents`, `group`, `hidden`) VALUES (999, 'Benefits Fair', 'Gym', 999, -1, 1);
 
 # Dump of table config
 # ------------------------------------------------------------

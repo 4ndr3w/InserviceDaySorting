@@ -129,12 +129,12 @@ class Database
 	function getNumberOfStudentsSignedUpForCareer($id)
 	{
 		$num = 0;
-		for ( $i = 1; $i <= 5; $i++ )
+		for ( $i = 1; $i <= 4; $i++ )
 			$num += mysql_num_rows(mysql_query("SELECT * FROM `selections` WHERE `s".$i."` = ".$id));
 		return $num;
 	}
 	
-	function setStudentChoices($id, $c1, $c2, $c3, $c4, $c5)
+	function setStudentChoices($id, $c1, $c2, $c3, $c4)
 	{
 		if ( ($id = intval($id)) == 0 )
 			return false;
@@ -147,10 +147,8 @@ class Database
 			return false;
 		if ( ($c4 = intval($c4)) == 0 )
 			return false;
-		if ( ($c5 = intval($c5)) == 0 )
-			return false;
 			
-		return mysql_query("INSERT INTO `selections` (id, s1,s2,s3,s4,s5) VALUES (".$id.", ".$c1.", ".$c2.", ".$c3.", ".$c4.", ".$c5.")");	
+		return mysql_query("INSERT INTO `selections` (id, s1,s2,s3,s4) VALUES (".$id.", ".$c1.", ".$c2.", ".$c3.", ".$c4.")");	
 	}
 	
 	function getStudentChoices($id)

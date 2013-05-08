@@ -72,7 +72,7 @@ $careers = $database->getCareers(true, true);
 					<tr>
 						<th class="normalCell"><?php echo $student['id']; ?></th>
 						<?php
-						for ( $i = 1; $i < 6; $i++ )
+						for ( $i = 1; $i < 5; $i++ )
 						{
 							echo "<th class=\"normalCell\">".$careers[$choices['s'.$i]]['name']."</th>";
 						}

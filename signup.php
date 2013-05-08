@@ -33,10 +33,10 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 		
 		function choicesAreUnique()
 		{
-			for ( a = 4; a <= 8; a++ )
+			for ( a = 4; a <= 7; a++ )
 			{
 				aVal = document.getElementById("f"+a).value;
-				for ( b = 4; b <= 8; b++ )
+				for ( b = 4; b <= 7; b++ )
 				{
 					bVal = document.getElementById("f"+b).value;
 					if ( a != b && aVal == bVal && aVal != 0 )
@@ -64,7 +64,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 				return;
 			}
 
-			if ( num >= 4 && num <= 8 ) // Career lists
+			if ( num >= 4 && num <= 7 ) // Career lists
 			{
 				var careerList = document.getElementById("f5").options;
 				document.getElementById("c"+num).innerHTML = getCareerNameForID(document.getElementById("f"+num).value);
@@ -74,10 +74,10 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 
 			var process = 0;
 			var bar = 20;
-			for(i=0;i<9;i++){
+			for(i=0;i<8;i++){
 				if(document.getElementById("f"+i).value != "" && document.getElementById("f"+i).value != 0){
-					process = process + (100/10);
-					bar = bar + (860/10);
+					process = process + (100/9);
+					bar = bar + (860/9);
 				}
 			}
 			
@@ -86,7 +86,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 				width: bar + "px"},
 				1000,
 				function(){
-					if(bar >= ((860/10)*9) && choicesAreUnique() )
+					if(bar >= ((860/9)*8) && choicesAreUnique() )
 						$("#submitarea").slideDown();
 					else
 						$("#submitarea").slideUp();
@@ -117,8 +117,7 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 			_c2 = document.getElementById("f5").value;
 			_c3 = document.getElementById("f6").value;
 			_c4 = document.getElementById("f7").value;
-			_c5 = document.getElementById("f8").value;
-			dataToSend = {id: _id, first: _first, last: _last, location: _location, c1: _c1, c2: _c2, c3: _c3, c4: _c4, c5: _c5};
+			dataToSend = {id: _id, first: _first, last: _last, location: _location, c1: _c1, c2: _c2, c3: _c3, c4: _c4};
 			
 			$.ajax({
 				type: "POST",
@@ -186,7 +185,6 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 					<a onclick="">Choice 2: <span id="c5"></span><br></a>
 					<a onclick="">Choice 3: <span id="c6"></span><br></a>
 					<a onclick="">Choice 4: <span id="c7"></span><br></a>
-					<a onclick="">Choice 5: <span id="c8"></span><br></a>
 				</section>
 				<section id="formarea">
 					<div id="sect-0" class="sect">
@@ -243,16 +241,6 @@ array_multisort($careersSortPivot, SORT_ASC, $careers);
 						</select><br>
 						Choice 4:
 						<select id="f7" onchange="update(7)">
-							<option value="0" selected="selected" disabled="disabled">-Select One-</option>
-							<?php 
-							foreach ( $careers as $career )
-							{
-								echo "<option value=\"".$career['id']."\">".$career['name']."</option>";
-							}
-							?>
-						</select><br>
-						Choice 5:
-						<select id="f8" onchange="update(8)">
 							<option value="0" selected="selected" disabled="disabled">-Select One-</option>
 							<?php 
 							foreach ( $careers as $career )

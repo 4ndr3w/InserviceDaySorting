@@ -92,7 +92,7 @@ if ( empty($student) )
 				<td colspan="100%" class="columnHeader">Choices</td>
 			</tr>
 			<?php 
-			for ($i = 0; $i < 5; $i++ )
+			for ($i = 0; $i < 4; $i++ )
 			{
 				$thisChoice = $choices['s'.($i+1)];
 			?>
