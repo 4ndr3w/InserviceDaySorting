@@ -242,7 +242,9 @@ function attemptSchedule($scheduledCareers, $newCareerID, $student, $careers, &$
 	foreach ( $student->placements as $k => $placement )
 	{
 		if ( $placement->id != 0 )
+		{
 			$careers[$placement->id]->removeFromBlock($k);
+		}
 	}
 	$thisStudentSortSuccess = false;
 	for ( $_a = 0; $_a < 4; $_a++ )
@@ -311,6 +313,10 @@ function attemptSchedule($scheduledCareers, $newCareerID, $student, $careers, &$
 	return $thisStudentSortSuccess;
 }
 
+if ( count($students) == 0 )
+	die("Empty data set");
+
+
 for ( $i = 0; $i <= 5; $i++ )
 {
 	foreach ( $students as $studentKey => $student )
@@ -331,8 +337,7 @@ for ( $i = 0; $i <= 5; $i++ )
 		{
 			$highestChoiceNumber = $student->getHighestChoiceNumber();
 			$highestChoiceID = $student->choices[$highestChoiceNumber];
-			
-			if ( $highestChoiceID != -1)
+			if ( $highestChoiceID > 0)
 			{
 				$thisChoice = new Placement($highestChoiceID->id, $highestChoiceNumber);
 				$scheduledCareers = array();
