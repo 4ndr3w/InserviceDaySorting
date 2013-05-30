@@ -12,7 +12,7 @@ array_multisort($pivot, SORT_DESC, $students);
 ?>
 <br>
 <h3>Current List of Participants</h3>
-Printable lists: <a href="printables.php?by=student">by Participants</a> - <a href="printables.php?by=career">by Class</a> | <a href="viewSelections.php">View Selections</a><br>
+Printable lists: <a href="printables.php?by=student">by Participants</a> - <a href="printables.php?by=career">by Class</a><br><a href="viewSelections.php">View Selections</a> - <a href="viewPlacements.php">View Placements</a><br>
 <table id="table-Students">
 
 <?php

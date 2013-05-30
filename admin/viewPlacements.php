@@ -4,7 +4,7 @@ require_once "../db.php";
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>View Selections</title>
+		<title>View Placements</title>
 		<link rel="stylesheet" href="admin.css" />
 	</head>
 	<body>
@@ -12,14 +12,15 @@ require_once "../db.php";
 		<div id="container">
 			<br><br>
 			<table id="info" border="1">
+			
 				<tr>
 					<td><strong>ID</strong></td>
 					<td><strong>First</strong></td>
 					<td><strong>Last</strong></td>
-					<td><strong>Choice #1</strong></td>
-					<td><strong>Choice #2</strong></td>
-					<td><strong>Choice #3</strong></td>
-					<td><strong>Choice #4</strong></td>
+					<td><strong>Block #1</strong></td>
+					<td><strong>Block #2</strong></td>
+					<td><strong>Block #3</strong></td>
+					<td><strong>Block #4</strong></td>
 				</tr>
 				
 				<?php
@@ -35,7 +36,7 @@ require_once "../db.php";
 				
 				foreach ( $students as $student )
 				{
-					$choices = $database->getStudentChoices($student['id']);
+					$choices = $database->getStudentPlacement($student['id']);
 				?>
 				<tr>
 					<td><?php echo $student['id']; ?></td>
@@ -44,7 +45,7 @@ require_once "../db.php";
 					<?php
 					for ( $i = 0; $i < 4; $i++ )
 					{
-						echo "<td>".$classes[$choices["s".($i+1)]]['name']."</td>\n";
+						echo "<td>".$classes[$choices["p".($i+1)]]['name']."</td>\n";
 					}
 					?>
 				</tr>
