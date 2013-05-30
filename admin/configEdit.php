@@ -34,7 +34,9 @@ if ( array_key_exists("key", $_POST) && array_key_exists("value", $_POST) )
 		</script>
 	</head>
 	<body>
+		<a href="index.html">Back</a><br><br>
 		<div id="container">
+			
 			<br><br>
 			Site Name: <?php echo $database->getConfig("siteName"); ?> <button onClick="editValue('siteName')">Edit</button><br>
 			Banner Message: <?php echo $database->getConfig("bannerMsg"); ?> <button onClick="editValue('bannerMsg')">Edit</button>
