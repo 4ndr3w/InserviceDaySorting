@@ -135,12 +135,9 @@ if ( empty($student) )
 					foreach ( $careers as $career )
 					{
 						$full = ($database->getNumberOfStudentsInCareer($career['id'], $thisBlock) >= $career['maxStudents']);
-						if ( !$full || $placements['p'.$thisBlock] == $career['id'] )
-						{
 					?>
 					<option value="<?php echo $career['id']; ?>" <?php if ( $career['id'] == $placements['p'.$thisBlock] ) echo "selected=\"selected\""; ?>><?php echo $career['name']; if ( $full ) echo " --FULL--"; ?></option>
 					<?php
-						}
 					}
 					?>
 					</select>
