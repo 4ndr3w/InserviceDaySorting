@@ -42,7 +42,7 @@ $events = $database->getCareers(true, true);
 						echo "Schedules have not been generated yet.";
 					else
 					{
-						for ( $i = 0; $i < 4; $i++ )
+						for ( $i = 0; $i < 3; $i++ )
 						{
 							$event = $events[$schedule["p".($i+1)]];
 							echo "<tr><td><strong>".($i+1)."</strong></td><td>".$event['name']."</td></tr><br>\n";

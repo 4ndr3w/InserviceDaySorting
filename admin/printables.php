@@ -22,13 +22,13 @@
 	{
 		float: right;
 	}
-	
+
 	table
 	{
 		margin:auto;
 		text-align:center;
 	}
-	
+
 	#stats
 	{
 		margin:auto;
@@ -58,7 +58,7 @@ if ( $_GET['by'] == "student" )
 		$placements = $database->getStudentPlacement($student['id']);
 		echo "<div class=\"datablock ".($cur>($total/2)?"right":"left")."\">";
 		echo $student['id']." - ".$student['first']." ".$student['last']."<br>\n";
-		for ( $i = 1; $i < 5; $i++ )
+		for ( $i = 1; $i < 4; $i++ )
 		{
 			$career = $database->getCareer($placements["p".$i]);
 			echo $i." - ".$career['location']." - ".$career['name']."<br>\n";
@@ -76,13 +76,13 @@ else if ( $_GET['by'] == "career" )
 		echo $stat['name']." - ".$stat['value']."<br>\n";
 	}
 	echo "</div>";
-		
+
 	$careers = $database->getCareers();
 	foreach ( $careers as $career)
 	{
 		if ( $career['id'] != $assemblyID )
 		{
-			for ( $i = 0; $i < 4; $i++ )
+			for ( $i = 0; $i < 3; $i++ )
 			{
 				if ( $career['id'] == $seniorOptOutID && $i != 0 )
 					break;
@@ -93,7 +93,7 @@ else if ( $_GET['by'] == "career" )
 				<tr>
 					<td colspan="100%" class="title"><?php echo "<strong>".$career['name']." - Block ".($i+1)." - ".$num." participants</strong><br>\n"; ?></td>
 				</tr>
-			
+
 				<tr>
 					<td><strong>ID</strong></td>
 					<td><strong>Name</strong></td>

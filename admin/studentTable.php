@@ -12,15 +12,15 @@ array_multisort($pivot, SORT_DESC, $students);
 ?>
 <br>
 <h3>Current List of Participants</h3>
-Printable lists: <a href="printables.php?by=student">by Participants</a> - <a href="printables.php?by=career">by Class</a><br><a href="viewSelections.php">View Selections</a> - <a href="viewPlacements.php">View Placements</a><br>
+Printable lists: <a href="printables.php?by=student">by Participants</a> - <a href="printables.php?by=career">by Class</a><br>
 <table id="table-Students">
 
 <?php
 foreach ( $students as $student )
 {
 	$placements = $database->getStudentPlacement($student['id']);
-	echo "<th colspan='4'>ID: ".$student['id']." ".$student['first']." ".$student['last']."</th><tr>";
-	for ( $i = 1; $i < 5; $i++ )
+	echo "<th colspan='3'>ID: ".$student['id']." ".$student['first']." ".$student['last']."</th><tr>";
+	for ( $i = 1; $i < 4; $i++ )
 	{
 		$career = $database->getCareer($placements["p".$i]);
 		echo "<td colspan='1'>".$career['name']." - ".$career['location']."</td>";
