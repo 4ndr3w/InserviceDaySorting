@@ -231,12 +231,17 @@ foreach ( $_careers as $career )
 }
 
 // Convert mysql data to an array of Student objects, also assign the assembly block as static
+$fairPlacement = 0;
 foreach ( $_students as $student )
 {
 	$choices = $database->getStudentChoices($student['id']);
 	$placement = $database->getStudentPlacement($student['id']);
 	$thisStudent = new Student($student['id'], $student['grade'], $choices['s1'], $choices['s2'], $choices['s3'], $choices['s4']);
-	$thisStudent->assignBlock(2, new Placement($fairID, 100, true));
+	$thisStudent->assignBlock($fairPlacement, new Placement($fairID, 100, true));
+	if ($fairPlacement == 2)
+		$fairPlacement = 0;
+	else
+		$fairPlacement++;
 	$students[$thisStudent->id] = $thisStudent;
 }
 
